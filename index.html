@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TECHNE Apps – Anleitung</title>
+<style>
+  :root {
+    --rot: #c8102e;
+    --rot-hell: #fbe9ec;
+    --dunkel: #1c1c1e;
+    --grau: #5f6368;
+    --linie: #e3e3e6;
+    --karte: #f7f7f8;
+    --gelb: #fff6dd;
+    --gelb-rand: #e6c34a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--dunkel); background: #fff; line-height: 1.55; font-size: 16px;
+  }
+  header {
+    background: var(--dunkel); color: #fff; padding: 20px 16px 14px;
+  }
+  header h1 { margin: 0 0 2px; font-size: 22px; }
+  header p { margin: 0; color: #c9c9ce; font-size: 13px; }
+  header .logo { color: var(--rot); font-weight: 800; letter-spacing: .5px; }
+  .schalter {
+    position: sticky; top: 0; z-index: 10; background: #fff;
+    border-bottom: 2px solid var(--linie); padding: 10px 16px;
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  .schalter span { font-size: 13px; color: var(--grau); }
+  .schalter button {
+    border: 1.5px solid var(--linie); background: #fff; border-radius: 18px;
+    padding: 6px 14px; font-size: 14px; cursor: pointer; font-weight: 600; color: var(--grau);
+  }
+  .schalter button.aktiv { background: var(--rot); border-color: var(--rot); color: #fff; }
+  main { max-width: 760px; margin: 0 auto; padding: 8px 16px 60px; }
+  h2 {
+    font-size: 20px; margin: 36px 0 8px; padding-bottom: 6px;
+    border-bottom: 2px solid var(--rot);
+  }
+  h3 { font-size: 17px; margin: 26px 0 6px; }
+  .chip {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .3px;
+    border-radius: 10px; padding: 2px 9px; vertical-align: 2px; margin-left: 6px;
+  }
+  .chip.va { background: #e8f0fe; color: #1a56b0; }
+  .chip.chef { background: var(--rot-hell); color: var(--rot); }
+  .chip.neu { background: #e6f6ea; color: #157a3a; }
+  ol.schritte { padding-left: 22px; }
+  ol.schritte li { margin: 7px 0; }
+  .knopf {
+    display: inline-block; background: var(--karte); border: 1px solid var(--linie);
+    border-radius: 7px; padding: 1px 8px; font-size: 14px; font-weight: 600; white-space: nowrap;
+  }
+  .knopf.rot { background: var(--rot); border-color: var(--rot); color: #fff; }
+  .hinweis {
+    background: var(--gelb); border-left: 4px solid var(--gelb-rand);
+    border-radius: 6px; padding: 10px 14px; margin: 14px 0; font-size: 15px;
+  }
+  .info {
+    background: var(--karte); border-left: 4px solid var(--grau);
+    border-radius: 6px; padding: 10px 14px; margin: 14px 0; font-size: 15px;
+  }
+  .wichtig {
+    background: var(--rot-hell); border-left: 4px solid var(--rot);
+    border-radius: 6px; padding: 10px 14px; margin: 14px 0; font-size: 15px;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 15px; }
+  th, td { border: 1px solid var(--linie); padding: 7px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--karte); }
+  code { background: var(--karte); border-radius: 4px; padding: 1px 5px; font-size: 14px; }
+  a { color: var(--rot); }
+  .toc { background: var(--karte); border-radius: 10px; padding: 14px 18px; margin: 18px 0; }
+  .toc ul { margin: 6px 0 0; padding-left: 20px; }
+  .toc li { margin: 3px 0; }
+  details { border: 1px solid var(--linie); border-radius: 8px; padding: 8px 14px; margin: 8px 0; }
+  summary { font-weight: 600; cursor: pointer; }
+  footer { text-align: center; color: var(--grau); font-size: 12px; padding: 20px; border-top: 1px solid var(--linie); }
+  /* Rollen-Sichtbarkeit (nur Anzeige-Komfort — Chef-Inhalte sind in der Team-Datei physisch NICHT enthalten) */
+  body[data-rolle="techniker"] [data-rolle="vorarbeiter"] { display: none; }
+  body[data-rolle="techniker"] [data-rolle="chef"] { display: none; }
+  body[data-rolle="vorarbeiter"] [data-rolle="chef"] { display: none; }
+  /* Druck/PDF: Umschalter weg, ALLE Rollen-Abschnitte sichtbar (die Datei-Trennung team/chef regelt die Vertraulichkeit) */
+  @media print {
+    .schalter { display: none; }
+    body[data-rolle] [data-rolle] { display: block !important; }
+    header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    h2 { page-break-after: avoid; }
+    details { page-break-inside: avoid; }
+    details > summary { list-style: none; font-weight: 700; }
+    details > *:not(summary) { display: block !important; } /* FAQ-Antworten im PDF immer sichtbar */
+  }
+</style>
+</head>
+<body data-rolle="techniker">
+
+<header>
+  <h1><span class="logo">TECHNE</span> Apps – Anleitung</h1>
+  <p>Tagesbericht-App &amp; Leitstand · Stand 07.07.2026</p>
+</header>
+
+<div class="schalter">
+  <span>Meine Rolle:</span>
+  <button data-ziel="techniker" onclick="setRolle('techniker')">Techniker</button>
+  <button data-ziel="vorarbeiter" onclick="setRolle('vorarbeiter')">Vorarbeiter</button>
+  
+</div>
+
+<main>
+
+<div class="toc">
+  <strong>Inhalt</strong>
+  <ul>
+    <li><a href="#los">1 · Los geht's</a></li>
+    <li><a href="#tb">2 · Tagesbericht-App (Handy)</a></li>
+    <li><a href="#ls">3 · Leitstand – für alle</a></li>
+    <li data-rolle="vorarbeiter"><a href="#va">4 · Leitstand – Vorarbeiter</a></li>
+    
+    <li><a href="#faq">5 · Häufige Fragen &amp; Hilfe</a></li>
+  </ul>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="los">1 · Los geht's</h2>
+
+<p>Wir arbeiten mit zwei Apps, die zusammengehören:</p>
+<table>
+  <tr><th>App</th><th>Wofür</th><th>Wo</th></tr>
+  <tr>
+    <td><strong>TECHNE Tagesbericht</strong></td>
+    <td>Dein täglicher Arbeitsbericht von der Baustelle</td>
+    <td>Handy (Power&nbsp;Apps App)</td>
+  </tr>
+  <tr>
+    <td><strong>TECHNE Leitstand</strong></td>
+    <td>Einsatzplan, Wochenberichte und Planung im Überblick</td>
+    <td>Tablet / PC / Handy quer</td>
+  </tr>
+</table>
+
+<h3>Erste Anmeldung</h3>
+<ol class="schritte">
+  <li>Installiere die App <strong>„Power Apps"</strong> (Microsoft) aus dem App Store / Play Store.</li>
+  <li>Melde dich mit deinem <strong>TECHNE-Konto</strong> an (deine Firmen-E-Mail, gleiches Passwort wie bei Teams/Outlook).</li>
+  <li>In der Power-Apps-App findest du beide Apps unter „Alle Apps": <strong>TECHNE Tagesbericht</strong> und <strong>TECHNE Leitstand</strong>. Tippe lange auf eine App → <em>„An Start anheften"</em>, dann hast du sie wie eine normale App am Homescreen.</li>
+</ol>
+
+<div class="hinweis">
+  <strong>Testphase bis ca. 16.07.:</strong> Die Apps enthalten noch Testdaten. Zähler und Zeitkonten
+  können deshalb komisch aussehen — das ist normal und wird zum Umstieg bereinigt. Jetzt ist genau die
+  richtige Zeit zum Ausprobieren: Kaputt machen kannst du nichts.
+</div>
+
+<div class="info">
+  <strong>Goldene Regel:</strong> Wenn eine App komisch aussieht oder einen alten Stand zeigt —
+  App <strong>komplett schließen und neu öffnen</strong>. Das lädt die neueste Version.
+</div>
+
+<!-- ================================================================ -->
+<h2 id="tb">2 · Tagesbericht-App <span style="font-weight:400;font-size:14px;color:var(--grau)">(für alle)</span></h2>
+
+<h3>2.1 · Die Startseite</h3>
+<p>Nach dem Öffnen begrüßt dich die App mit deinem Namen. Von hier aus:</p>
+<ul>
+  <li><span class="knopf rot">⚡ Wie gestern übernehmen</span> — legt einen neuen Bericht an und übernimmt Projekt und Eckdaten von gestern. Der schnellste Weg, wenn du auf derselben Baustelle weiterarbeitest.</li>
+  <li><span class="knopf">+ Neuer Tagesbericht</span> — leerer Bericht.</li>
+  <li><strong>Letzte Tagesberichte</strong> — deine jüngsten Berichte zum Nachschauen oder Weiterbearbeiten.</li>
+  <li><span class="knopf">Alle Berichte</span> — Liste aller Berichte mit Suche.</li>
+</ul>
+
+<h3>2.2 · Schritt 1: Erfassung</h3>
+<p>Der Bericht führt dich in drei Schritten durch: <strong>1&nbsp;Erfassung → 2&nbsp;PL-Details → 3&nbsp;Abschluss</strong>.</p>
+<ol class="schritte">
+  <li><strong>Projekt wählen:</strong> Erst den Kunden, dann das Projekt — die Liste filtert automatisch.</li>
+  <li><strong>Datum prüfen:</strong> Steht auf heute; für Nachträge änderbar.</li>
+  <li><strong>Zeiten eintragen:</strong> Beginn und Ende auswählen, Pause und Fahrzeit über die Schieberegler einstellen. Die <strong>Netto-Arbeitszeit</strong> rechnet die App live aus — sie zählt für dein Stundenkonto.</li>
+  <li><strong>Aufgaben:</strong> Was wurde heute gemacht? Kurz und konkret — dieser Text erscheint später im Wochenbericht an den Kunden. (Optional, aber sehr empfohlen.)</li>
+  <li><strong>Sonstiges / Blockaden:</strong> Interne Anmerkungen, kleinere Hindernisse.</li>
+</ol>
+
+<h3>2.3 · Behinderungen / Bauzeitverzug <span class="chip neu">NEU</span></h3>
+<p>Unter den Aufgaben gibt es jetzt die Karte <strong>„BEHINDERUNGEN / BAUZEITVERZUG"</strong>.
+Setze das Häkchen <span class="knopf">Behinderung aufgetreten?</span>, wenn dich heute etwas an der
+Arbeit gehindert hat, das <strong>nicht bei uns liegt</strong> — z.&nbsp;B. eine fehlende Vorleistung eines
+anderen Gewerks, gesperrte Bereiche oder fehlende Freigaben.</p>
+<p>Es klappt ein Textfeld auf. Beantworte darin kurz diese vier Fragen:</p>
+<ol class="schritte">
+  <li><strong>Was</strong> behindert? </li>
+  <li><strong>Seit wann?</strong></li>
+  <li><strong>Verursacht durch wen?</strong></li>
+  <li><strong>Auswirkung?</strong> (z.&nbsp;B. geschätzter Verzug)</li>
+</ol>
+<div class="info">
+  <strong>Beispiel:</strong> „Vorleistung Baumeister fehlt seit 03.07., Steigleitung nicht montierbar — ca. 2 Tage Verzug."
+</div>
+<div class="wichtig">
+  <strong>Warum das wichtig ist:</strong> Diese Einträge sind unsere <strong>Beweissicherung nach ÖNORM B2110</strong>.
+  Nur was am selben Tag dokumentiert ist, können wir später gegenüber dem Auftraggeber geltend machen
+  (Bauzeitverlängerung, Mehrkosten). Lieber einmal zu viel eintragen als einmal zu wenig.
+</div>
+
+<h3>2.4 · Fotos</h3>
+<p>Bis zu <strong>8 Fotos</strong> je Bericht über <span class="knopf">📷 Foto aufnehmen / auswählen</span> —
+einzeln hinzufügen. Die Fotos werden mit dem Bericht gespeichert und erscheinen im PDF.
+Fotografiere besonders: Baufortschritt, verdeckte Leitungswege vor dem Schließen, und alles, was mit einer
+gemeldeten <strong>Behinderung</strong> zu tun hat.</p>
+
+<h3>2.5 · Schritt 2: PL-Details</h3>
+<p>Hier kommen die Punkte rein, die für Abrechnung und Nachschub wichtig sind:</p>
+<ul>
+  <li><strong>Material verbraucht</strong> — Positionen mit Menge und Einheit erfassen.</li>
+  <li><strong>Lieferscheine</strong> — Nummern der heute erhaltenen Lieferungen.</li>
+  <li><strong>Mehraufwand / Nachträge</strong> — Arbeiten, die <strong>über den vereinbarten Umfang hinausgehen</strong>
+    (Zusatzwünsche des Kunden, unvorhergesehene Arbeiten). Jede Position kurz beschreiben.
+    <div class="wichtig" style="margin:8px 0 0">Mehraufwand nicht vergessen! Was hier nicht steht, können wir nicht verrechnen.</div>
+  </li>
+  <li><strong>Wetter</strong> und <strong>Baufortschritt</strong> auswählen.</li>
+</ul>
+
+<h3>2.6 · Schritt 3: Abschluss</h3>
+<ol class="schritte">
+  <li>Die <strong>Zusammenfassung</strong> zeigt alles auf einen Blick — kurz prüfen. Rote Markierungen weisen auf Mehraufwand/Behinderungen hin.</li>
+  <li>Falls gewünscht: <strong>Unterschrift</strong> des Kunden direkt am Handy einholen.</li>
+  <li><span class="knopf rot">Tagesbericht abschließen ✓</span> antippen — der Bericht geht als <strong>„Eingereicht"</strong> ans Büro.</li>
+</ol>
+<div class="info">
+  Bitte den Bericht <strong>noch am selben Arbeitstag</strong> abschließen — die Wochenberichte an die Kunden
+  und die Stundenkonten bauen darauf auf.
+</div>
+
+<h3>2.7 · Bericht korrigieren</h3>
+<p>Wenn das Büro bei der Prüfung etwas findet, bekommt dein Bericht den Status <strong>„Korrektur nötig"</strong>.
+Öffne ihn über „Letzte Tagesberichte" / „Alle Berichte", bessere aus und schließe ihn erneut ab.</p>
+
+<!-- ================================================================ -->
+<h2 id="ls">3 · Leitstand – für alle</h2>
+
+<p>Der Leitstand ist unser Cockpit. <strong>Was du siehst, hängt von deiner Rolle ab</strong> —
+die Menüleiste links zeigt nur die Bereiche, die für dich freigeschaltet sind. Am besten am Tablet,
+PC oder Handy im Querformat nutzen.</p>
+
+<h3>3.1 · Meine Übersicht</h3>
+<ul>
+  <li>Deine <strong>Woche auf einen Blick</strong>: geplante Einsätze, deine abgegebenen Berichte.</li>
+  <li>Dein <strong>Zeitkonto</strong> (Plus-/Minusstunden). <em>In der Testphase steht es neutral auf „—" — die echten Salden kommen zum Go-Live.</em></li>
+  <li>Urlaubs-Übersicht.</li>
+</ul>
+
+<h3>3.2 · Einsatzplan</h3>
+<ul>
+  <li>Die <strong>Wochenansicht</strong> zeigt, wer wann wo eingeteilt ist — je Einsatz mit Tätigkeit, Projekt und Kunde.</li>
+  <li>Mit <span class="knopf">‹</span> <span class="knopf">›</span> blätterst du durch die Wochen, Filter nach Person oder Kunde oben.</li>
+  <li>So siehst du schon am Vortag, wo du morgen bist — inklusive Adresse.</li>
+</ul>
+
+
+<h3>3.3 · Wochenbericht</h3>
+<p>Hier erstellst du den <strong>Wochenbericht je Baustelle</strong> — gespeist aus den Tagesberichten aller Kollegen auf diesem Projekt.</p>
+<ol class="schritte">
+  <li><strong>Kunde</strong> wählen (oder „(Alle Kunden)" lassen) → die <strong>Projektliste</strong> filtert automatisch.</li>
+  <li><strong>Projekt</strong> und <strong>Kalenderwoche</strong> wählen.</li>
+  <li>Die Wochenübersicht zeigt je Tag: wer war da, wie viele Stunden, was wurde gemacht — plus Kennzahlen
+      (Einsatztage, Stunden, Mehraufwand, Fortschritt, Material, Behinderungen).</li>
+  <li>Version wählen:
+    <ul>
+      <li><span class="knopf">Intern (mit Markern)</span> — zeigt zusätzlich Mehraufwand-Marker und interne Hinweise.</li>
+      <li><span class="knopf">Kunde (bereinigt)</span> — nur Leistung, Fortschritt, Fotos und Behinderungen; interne Marker entfernt.</li>
+    </ul>
+  </li>
+  <li><span class="knopf rot">⬇ Als PDF exportieren</span> — das PDF wird automatisch im Projektordner
+      unter <code>10_Abschlussdokumentation</code> abgelegt.</li>
+</ol>
+<div class="info">
+  <strong>Vor dem Kunden-Export kurz prüfen:</strong> Stimmen alle Angaben? Der Kunde liest genau das, was in den Tagesberichten steht.
+</div>
+
+<!-- ================================================================ -->
+<section data-rolle="vorarbeiter">
+<h2 id="va">4 · Leitstand – Vorarbeiter <span class="chip va">Vorarbeiter</span></h2>
+
+<h3>4.1 · Jahresplanung lesen</h3>
+<ul>
+  <li><strong>Auslastung nach Monat:</strong> Balken = verplante Stunden geteilt durch Kapazität des Teams. Ziellinie 85&nbsp;%. Schraffiert = noch keine Planung erfasst (heißt nicht „frei").</li>
+  <li><strong>Kommende 8 Wochen im Detail:</strong> je KW verplante Stunden, Auslastung, freie Stunden und geplantes Leihpersonal.</li>
+  <li>Kapazität = Wochenstunden aller minus Feiertage und genehmigte Urlaube/Krankenstände, plus geplantes Leihpersonal.</li>
+</ul>
+
+<h3>4.2 · Leihpersonal planen</h3>
+<ol class="schritte">
+  <li>Oben rechts <span class="knopf">+ Leih planen</span>.</li>
+  <li><strong>Monat</strong> wählen, <strong>Stunden</strong> gesamt eintragen (z.&nbsp;B. 160 = 1 Monteur Vollzeit), optional eine <strong>Notiz</strong> (Firma, Anzahl).</li>
+  <li><span class="knopf rot">Speichern</span> — Kapazität und Auslastung rechnen sofort mit dem Leihpersonal.</li>
+</ol>
+<div class="wichtig">
+  <strong>Zwei Dinge beachten:</strong> (1) Es gilt <strong>ein Wert je Monat</strong> — erneutes Speichern
+  <strong>überschreibt</strong> den vorhandenen Monatswert. (2) Leihpersonal bitte immer <strong>mit das Büro
+  abgesprochen</strong> planen — der Eintrag hier ist die Planung, nicht die Bestellung.
+</div>
+
+<h3>4.3 · Projekte pflegen</h3>
+<ul>
+  <li>Die Projektliste zeigt alle Projekte mit Status, Projektleiter, Priorität, Adresse und Plan-Terminen.</li>
+  <li>Diese Felder kannst du <strong>direkt in der Zeile</strong> über die Dropdowns bzw. Datumsfelder ändern — die Änderung speichert sofort.</li>
+  <li>Über die Spaltenköpfe <span class="knopf">STATUS</span> <span class="knopf">PL</span> <span class="knopf">PRIO</span> sortierst du die Liste.</li>
+</ul>
+</section>
+
+<!-- ================================================================ -->
+
+
+<!-- ================================================================ -->
+<h2 id="faq">5 · Häufige Fragen &amp; Hilfe</h2>
+
+<details>
+  <summary>Ich sehe einen Menüpunkt nicht, den ein Kollege hat.</summary>
+  <p>Das ist Absicht: Die Menüleiste richtet sich nach deiner <strong>Rolle</strong> (Techniker, Vorarbeiter, Office, Inhaber).
+  Wenn du glaubst, dass dir etwas fehlen sollte, melde dich im Büro.</p>
+</details>
+<details>
+  <summary>Die Zahlen wirken falsch (Zeitkonto, Zähler, Auslastung).</summary>
+  <p>Bis zum Go-Live (~16.07.) läuft die <strong>Testphase</strong>: Es sind Testdaten enthalten und die Zeitkonten starten
+  neutral. Zum Umstieg wird bereinigt und mit echten Startwerten neu aufgesetzt.</p>
+</details>
+<details>
+  <summary>Die App zeigt einen alten Stand oder verhält sich seltsam.</summary>
+  <p>App <strong>komplett schließen und neu öffnen</strong> (nicht nur in den Hintergrund legen). Damit lädt sie die neueste
+  veröffentlichte Version. Hilft das nicht: Handy-Browser-Cache leeren bzw. Power-Apps-App neu starten.</p>
+</details>
+<details>
+  <summary>Beim Speichern kommt eine Fehlermeldung.</summary>
+  <p>Screenshot machen und ans Büro schicken — mit kurzer Info, was du gerade gemacht hast.
+  Meistens ist es in einer Minute geklärt.</p>
+</details>
+<details>
+  <summary>Was gehört in „Behinderungen", was in „Sonstiges/Blockaden"?</summary>
+  <p><strong>Behinderungen</strong> = externe Ursachen, die Bauzeit oder Kosten beeinflussen können (fehlende Vorleistungen,
+  gesperrte Bereiche, fehlende Freigaben) — das ist unsere Beweissicherung nach ÖNORM B2110.
+  <strong>Sonstiges/Blockaden</strong> = interne Notizen und Kleinkram ohne Anspruch nach außen.</p>
+</details>
+<details>
+  <summary>Mein Bericht steht auf „Korrektur nötig" — was tun?</summary>
+  <p>Bericht in der Tagesbericht-App öffnen (Letzte Tagesberichte / Alle Berichte), ausbessern, erneut abschließen.
+  Im Zweifel kurz beim Büro nachfragen, was gemeint war.</p>
+</details>
+
+<div class="info">
+  <strong>Ansprechpartner:</strong> Bei Fragen zu Bedienung, Rollen oder Rechten wende dich an <strong>dein Büro</strong>.
+</div>
+
+</main>
+
+<footer>TECHNE · Bedienungsanleitung</footer>
+
+<script>
+function setRolle(r) {
+  document.body.dataset.rolle = r;
+  document.querySelectorAll('.schalter button').forEach(function(b) {
+    b.classList.toggle('aktiv', b.dataset.ziel === r);
+  });
+  try { localStorage.setItem('techne-anleitung-rolle', r); } catch (e) {}
+}
+(function() {
+  var r = 'techniker';
+  try { r = localStorage.getItem('techne-anleitung-rolle') || r; } catch (e) {}
+  if (!document.querySelector('.schalter button[data-ziel="' + r + '"]')) { r = 'techniker'; }
+  setRolle(r);
+})();
+</script>
+</body>
+</html>
