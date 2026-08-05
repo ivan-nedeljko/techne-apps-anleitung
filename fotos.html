@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Baustellenfotos ablegen — Anleitung / Instrukcja / Návod / Uputa / Instrucțiuni</title>
+<style>
+:root{
+  --braun:#7a4212; --braun-hell:#f4ece3;
+  --blau:#0b5fa5;  --blau-hell:#e8f0f8;
+  --gruen:#3d7a00; --gruen-hell:#eef5e6; --rot:#bd1717;
+  --tinte:#16191c; --grau:#5d666e; --linie:#c9d0d6; --panel:#eef1f3;
+  --display:"Arial Narrow","Roboto Condensed",Arial,sans-serif;
+  --body:"Segoe UI",system-ui,Arial,sans-serif;
+  --mono:Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+body{margin:0 auto;padding:12mm;background:#fff;color:var(--tinte);
+  font-family:var(--body);font-size:10.5pt;line-height:1.42;max-width:210mm}
+h1,h2,h3,.lbl,.tu{font-family:var(--display);text-transform:uppercase;letter-spacing:.055em;margin:0}
+h1{font-size:22pt;font-weight:700;line-height:1.05}
+.sub{font-size:10pt;color:var(--grau);margin:4px 0 0;max-width:150mm}
+.mono{font-family:var(--mono)}
+.zurlink{font-family:var(--display);text-transform:uppercase;font-size:9pt;letter-spacing:.08em;
+  color:var(--grau);text-decoration:none;display:inline-block;margin-bottom:8px}
+.zurlink:hover{color:var(--tinte)}
+
+.sprachen{display:flex;gap:5px;align-items:center;margin:0 0 9px;flex-wrap:wrap}
+.sprachen .hint{font-family:var(--display);text-transform:uppercase;font-size:8pt;
+  letter-spacing:.1em;color:var(--grau);margin-right:3px}
+.sprachen button{font-family:var(--display);text-transform:uppercase;font-size:9.5pt;
+  letter-spacing:.08em;padding:4px 11px;border:1.5px solid var(--linie);background:#fff;
+  color:var(--grau);cursor:pointer;border-radius:0}
+.sprachen button:hover{border-color:var(--tinte);color:var(--tinte)}
+.sprachen button[aria-pressed="true"]{background:var(--tinte);border-color:var(--tinte);color:#fff}
+.sprachen button:focus-visible{outline:2px solid var(--blau);outline-offset:2px}
+
+header{border-bottom:2.5px solid var(--tinte);padding-bottom:8px}
+.kopfzeile{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.stempel{font-family:var(--display);text-transform:uppercase;font-size:8pt;letter-spacing:.12em;
+  color:var(--grau);text-align:right;line-height:1.5;white-space:nowrap}
+
+.klemmen{margin:13px 0 0}
+.klemmen svg{display:block;width:100%;height:auto}
+.klemmtexte{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:3px 0 15px}
+.klemmtexte p{margin:0;font-size:9pt;color:var(--grau);padding-right:8px}
+.klemmtexte b{color:var(--tinte)}
+
+.wege{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
+.weg{border:1.5px solid var(--linie);border-top-width:5px;padding:11px 12px 13px}
+.weg.ios{border-top-color:var(--blau);background:var(--blau-hell)}
+.weg.andro{border-top-color:var(--gruen);background:var(--gruen-hell)}
+.weg .lbl{font-size:8.5pt;color:var(--grau)}
+.weg h2{font-size:13.5pt;margin:2px 0 7px}
+.weg.ios h2{color:var(--blau)}
+.weg.andro h2{color:var(--gruen)}
+.weg p{margin:0 0 7px}
+.weg ol{margin:0 0 7px;padding-left:18px}
+.weg li{margin:0 0 3px}
+.tu{font-size:8.5pt;letter-spacing:.09em;border-bottom:1px solid var(--linie);
+  padding-bottom:2px;margin:9px 0 5px}
+.merk{font-size:9pt;color:var(--grau);margin:7px 0 0;padding-left:16px;position:relative}
+.merk::before{content:"→";position:absolute;left:0;font-family:var(--mono)}
+
+.zurueck{border:1.5px solid var(--linie);padding:11px 12px 12px;margin-bottom:13px}
+.zurueck h2{font-size:12.5pt;margin-bottom:8px}
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.block{font-family:var(--mono);font-size:9pt;background:var(--panel);border:1px dashed var(--grau);
+  padding:7px 9px;white-space:pre-wrap;line-height:1.5}
+.cap{font-size:8.5pt;color:var(--grau);margin:5px 0 0}
+
+.regeln{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}
+.regel{border:1.5px solid var(--linie);border-left-width:5px;padding:8px 10px}
+.regel.gut{border-left-color:var(--gruen)}
+.regel.acht{border-left-color:var(--rot)}
+.regel h3{font-size:9.5pt;margin-bottom:3px}
+.regel p{margin:0;font-size:9pt;color:var(--grau)}
+
+.kette{border-top:2.5px solid var(--tinte);padding-top:9px;display:flex;align-items:center;
+  gap:8px;flex-wrap:wrap;font-family:var(--display);text-transform:uppercase;
+  font-size:9pt;letter-spacing:.06em}
+.kette span.pfeil{color:var(--braun);font-family:var(--mono);font-size:11pt}
+.kette b{font-weight:700}
+.fuss{font-size:8.5pt;color:var(--grau);margin-top:7px}
+
+@media (max-width:640px){
+  body{padding:6mm 5mm}
+  .wege,.zwei,.regeln,.klemmtexte{grid-template-columns:1fr}
+  .regeln{gap:7px}
+  h1{font-size:19pt}
+}
+@media print{
+  body{padding:0;font-size:9.5pt}
+  .sprachen,.zurlink{display:none}
+  .weg,.zurueck,.regel{break-inside:avoid}
+  @page{size:A4 portrait;margin:12mm}
+}
+</style>
+</head>
+<body>
+
+<a class="zurlink" href="index.html">&larr; TECHNE Apps &mdash; Anleitung</a>
+
+<div class="sprachen" role="group" aria-label="Sprache / Language">
+  <span class="hint">Sprache</span>
+  <button type="button" data-lang="de" aria-pressed="true">Deutsch</button>
+  <button type="button" data-lang="pl" aria-pressed="false">Polski</button>
+  <button type="button" data-lang="sk" aria-pressed="false">Slovensky</button>
+  <button type="button" data-lang="hr" aria-pressed="false">Hrvatski / Srpski</button>
+  <button type="button" data-lang="ro" aria-pressed="false">Română</button>
+</div>
+
+<header>
+  <div class="kopfzeile">
+    <div>
+      <h1 data-k="h1">Baustellenfotos ablegen</h1>
+      <p class="sub" data-k="sub">Fotos gehören in den Projektordner <span class="mono">01_Fotos</span> — nicht als Bild in den Teams-Thread. Über den Link im Baustellen-Post sind es drei Schritte.</p>
+    </div>
+    <div class="stempel">TECHNE e.U.<br>CHK · Fotos · v1<br>05.08.2026</div>
+  </div>
+</header>
+
+<div class="klemmen">
+<svg viewBox="0 0 700 74" role="img" aria-label="Ablauf">
+  <line x1="0" y1="14" x2="700" y2="14" stroke="#16191c" stroke-width="2"/>
+  <g fill="none" stroke="#16191c" stroke-width="1.5">
+    <rect x="8" y="14" width="212" height="44"/><rect x="244" y="14" width="212" height="44"/><rect x="480" y="14" width="212" height="44"/>
+  </g>
+  <g fill="#16191c" font-family="Arial Narrow, Arial" font-size="13" letter-spacing="1.4">
+    <text x="20" y="34" data-k="s1">1  BAUSTELLEN-THREAD</text>
+    <text x="256" y="34" data-k="s2">2  FOTOS HOCHLADEN</text>
+    <text x="492" y="34" data-k="s3">3  MEHRERE WÄHLEN</text>
+  </g>
+  <g fill="#5d666e" font-family="Consolas, monospace" font-size="11">
+    <text x="20" y="50" data-k="s1b">in Teams öffnen</text>
+    <text x="256" y="50" data-k="s2b">Link im Post antippen</text>
+    <text x="492" y="50" data-k="s3b">alle auf einmal senden</text>
+  </g>
+  <g stroke="#7a4212" stroke-width="1.5" fill="none">
+    <path d="M224 36 h16"/><path d="M236 32 l6 4 -6 4"/>
+    <path d="M460 36 h16"/><path d="M472 32 l6 4 -6 4"/>
+  </g>
+</svg>
+</div>
+
+<div class="klemmtexte">
+  <p data-k="k1t">Jede Baustelle hat in Teams <b>einen Beitrag</b>. Dort steht die Referenznummer und der Ordnername.</p>
+  <p data-k="k2t">Im Beitrag steht die Zeile <b>📷 Fotos hochladen</b>. Genau diese antippen — sie führt in den richtigen Ordner.</p>
+  <p data-k="k3t">Im Ordner mehrere Fotos <b>gleichzeitig</b> markieren und hochladen. Nicht einzeln.</p>
+</div>
+
+<div class="wege">
+  <div class="weg ios">
+    <div class="lbl" data-k="ioslbl">Gerät 1</div>
+    <h2 data-k="iosh">iPhone</h2>
+    <ol>
+      <li data-k="ios1">Im Baustellen-Beitrag auf <b>📷 Fotos hochladen</b> tippen.</li>
+      <li data-k="ios2">Die <b>OneDrive-App</b> öffnet sich direkt im Ordner <span class="mono">01_Fotos</span>.</li>
+      <li data-k="ios3">Unten auf <b>+</b> tippen → <b>Hochladen</b> → <b>Fotos</b>.</li>
+      <li data-k="ios4">Mehrere Fotos antippen (alle bekommen ein Häkchen) → <b>Fertig</b>.</li>
+    </ol>
+    <p class="merk" data-k="iosmerk">Öffnet sich statt der App der Browser: einmal <b>Safari schließen</b>, Link erneut tippen. Bleibt der Browser, funktioniert es dort genauso — <b>+</b> → <b>Hochladen</b>.</p>
+  </div>
+  <div class="weg andro">
+    <div class="lbl" data-k="androlbl">Gerät 2</div>
+    <h2 data-k="androh">Android</h2>
+    <ol>
+      <li data-k="andro1">Im Baustellen-Beitrag auf <b>📷 Fotos hochladen</b> tippen.</li>
+      <li data-k="andro2">Fragt das Handy „Womit öffnen?" → <b>OneDrive</b> wählen und <b>Immer</b> tippen.</li>
+      <li data-k="andro3">Im Ordner <span class="mono">01_Fotos</span> auf <b>+</b> → <b>Hochladen</b> → <b>Fotos</b>.</li>
+      <li data-k="andro4">Fotos lange drücken, dann weitere antippen → <b>Öffnen</b>.</li>
+    </ol>
+    <p class="merk" data-k="andromerk">Öffnet immer der Browser: <b>Einstellungen → Apps → OneDrive → Standardmäßig öffnen → Unterstützte Links</b> einschalten. Danach geht es automatisch.</p>
+  </div>
+</div>
+
+<div class="zurueck">
+  <h2 data-k="einh">Einmal einrichten — dann nie wieder</h2>
+  <div class="zwei">
+    <div>
+      <div class="tu" data-k="tu1">Das brauchst du am Handy</div>
+      <div class="block" data-k="einblock">1. App "OneDrive" installieren
+   (App Store / Google Play)
+
+2. Anmelden mit der Firmen-Adresse
+   dieselbe wie in Teams
+
+3. Teams-App ist schon da</div>
+    </div>
+    <div>
+      <div class="tu" data-k="tu2">Woran du den richtigen Ordner erkennst</div>
+      <div class="block" data-k="ordblock">01_Fotos
+
+darüber steht der Projektordner, z. B.
+260101-0000-IEI-ST_Musterkunde-GmbH_
+Musterprojekt</div>
+      <p class="cap" data-k="ordcap">Stimmt die Referenznummer oben nicht mit der aus dem Beitrag überein, bist du in der falschen Baustelle — zurück und Link neu antippen.</p>
+    </div>
+  </div>
+</div>
+
+<div class="regeln">
+  <div class="regel gut">
+    <h3 data-k="r1h">Alle auf einmal</h3>
+    <p data-k="r1p">Nicht Foto für Foto. Markiere am Ende des Tages alle Bilder der Baustelle und lade sie in einem Rutsch hoch.</p>
+  </div>
+  <div class="regel gut">
+    <h3 data-k="r2h">Lieferscheine auch</h3>
+    <p data-k="r2p">Lieferschein, Typenschild, Zählerstand, Mangel — alles fotografieren und in denselben Ordner.</p>
+  </div>
+  <div class="regel acht">
+    <h3 data-k="r3h">Nicht in den Thread</h3>
+    <p data-k="r3p">Ein Bild direkt in die Nachricht gepostet bleibt in Teams und landet <b>nie</b> im Projektordner.</p>
+  </div>
+  <div class="regel acht">
+    <h3 data-k="r4h">Kein WhatsApp</h3>
+    <p data-k="r4p">Baustellenfotos gehen nicht über WhatsApp oder privates Handy-Album. Nur über den Link.</p>
+  </div>
+</div>
+
+<div class="kette">
+  <b data-k="c1">Foto machen</b><span class="pfeil">→</span>
+  <b data-k="c2">Thread öffnen</b><span class="pfeil">→</span>
+  <b data-k="c3">Link antippen</b><span class="pfeil">→</span>
+  <b data-k="c4">mehrere wählen</b><span class="pfeil">→</span>
+  <b data-k="c5">liegt im Projektordner</b>
+</div>
+<p class="fuss" data-k="fuss">Der Upload ist fertig, wenn das Häkchen erscheint. Bei schlechtem Empfang lädt OneDrive im Hintergrund weiter — Handy nicht sofort aus dem Netz nehmen. Geht etwas nicht, im Baustellen-Thread schreiben, nicht das Foto nochmal woanders hinschicken.</p>
+
+<script>
+var T = {
+ pl:{
+  h1:"Zdjęcia z budowy — gdzie je zapisać",
+  sub:'Zdjęcia należą do folderu projektu <span class="mono">01_Fotos</span> — nie jako obrazek w wątku Teams. Przez link w poście budowy to trzy kroki.',
+  s1:"1  WĄTEK BUDOWY", s2:"2  WYŚLIJ ZDJĘCIA", s3:"3  ZAZNACZ KILKA",
+  s1b:"otwórz w Teams", s2b:"dotknij linku w poście", s3b:"wyślij wszystkie naraz",
+  k1t:"Każda budowa ma w Teams <b>jeden post</b>. Tam jest numer referencyjny i nazwa folderu.",
+  k2t:"W poście jest wiersz <b>📷 Fotos hochladen</b>. Dotknij właśnie jego — prowadzi do właściwego folderu.",
+  k3t:"W folderze zaznacz <b>kilka zdjęć naraz</b> i wyślij. Nie pojedynczo.",
+  ioslbl:"Urządzenie 1", iosh:"iPhone",
+  ios1:"W poście budowy dotknij <b>📷 Fotos hochladen</b>.",
+  ios2:'Otworzy się <b>aplikacja OneDrive</b> bezpośrednio w folderze <span class="mono">01_Fotos</span>.',
+  ios3:"Na dole dotknij <b>+</b> → <b>Prześlij</b> → <b>Zdjęcia</b>.",
+  ios4:"Dotknij kilku zdjęć (każde dostaje znacznik) → <b>Gotowe</b>.",
+  iosmerk:"Jeśli zamiast aplikacji otworzy się przeglądarka: <b>zamknij Safari</b> i dotknij linku ponownie. Jeśli dalej przeglądarka — tam działa tak samo: <b>+</b> → <b>Prześlij</b>.",
+  androlbl:"Urządzenie 2", androh:"Android",
+  andro1:"W poście budowy dotknij <b>📷 Fotos hochladen</b>.",
+  andro2:'Gdy telefon zapyta „Czym otworzyć?" → wybierz <b>OneDrive</b> i <b>Zawsze</b>.',
+  andro3:'W folderze <span class="mono">01_Fotos</span> dotknij <b>+</b> → <b>Prześlij</b> → <b>Zdjęcia</b>.',
+  andro4:"Przytrzymaj zdjęcie, potem dotykaj kolejnych → <b>Otwórz</b>.",
+  andromerk:"Jeśli zawsze otwiera się przeglądarka: <b>Ustawienia → Aplikacje → OneDrive → Otwieraj domyślnie → Obsługiwane linki</b> włącz. Potem działa samo.",
+  einh:"Ustaw raz — i już nigdy więcej",
+  tu1:"Co musisz mieć w telefonie",
+  einblock:"1. Zainstaluj aplikację \"OneDrive\"\n   (App Store / Google Play)\n\n2. Zaloguj się adresem firmowym\n   tym samym co w Teams\n\n3. Teams już masz",
+  tu2:"Po czym poznasz właściwy folder",
+  ordblock:"01_Fotos\n\nnad nim stoi folder projektu, np.\n260101-0000-IEI-ST_Musterkunde-GmbH_\nMusterprojekt",
+  ordcap:"Jeśli numer referencyjny u góry nie zgadza się z tym z postu, jesteś na złej budowie — cofnij się i dotknij linku jeszcze raz.",
+  r1h:"Wszystkie naraz", r1p:"Nie zdjęcie po zdjęciu. Na koniec dnia zaznacz wszystkie zdjęcia budowy i wyślij za jednym razem.",
+  r2h:"Także dowody dostawy", r2p:"Dowód dostawy, tabliczka znamionowa, stan licznika, usterka — wszystko sfotografuj do tego samego folderu.",
+  r3h:"Nie do wątku", r3p:"Obrazek wstawiony wprost do wiadomości zostaje w Teams i <b>nigdy</b> nie trafi do folderu projektu.",
+  r4h:"Żadnego WhatsAppa", r4p:"Zdjęcia z budowy nie idą przez WhatsApp ani prywatną galerię. Tylko przez link.",
+  c1:"zrób zdjęcie", c2:"otwórz wątek", c3:"dotknij linku", c4:"zaznacz kilka", c5:"jest w folderze projektu",
+  fuss:"Wysyłka jest gotowa, gdy pojawi się znacznik. Przy słabym zasięgu OneDrive dosyła w tle — nie wyłączaj od razu sieci. Jeśli coś nie działa, napisz w wątku budowy, nie wysyłaj zdjęcia gdzie indziej."
+ },
+ sk:{
+  h1:"Fotky zo stavby — kam patria",
+  sub:'Fotky patria do priečinka projektu <span class="mono">01_Fotos</span> — nie ako obrázok do vlákna v Teams. Cez odkaz v príspevku stavby sú to tri kroky.',
+  s1:"1  VLÁKNO STAVBY", s2:"2  NAHRAJ FOTKY", s3:"3  OZNAČ VIAC",
+  s1b:"otvor v Teams", s2b:"klikni na odkaz v príspevku", s3b:"pošli všetky naraz",
+  k1t:"Každá stavba má v Teams <b>jeden príspevok</b>. Je tam referenčné číslo a názov priečinka.",
+  k2t:"V príspevku je riadok <b>📷 Fotos hochladen</b>. Klikni práve naň — vedie do správneho priečinka.",
+  k3t:"V priečinku označ <b>viac fotiek naraz</b> a nahraj. Nie po jednej.",
+  ioslbl:"Zariadenie 1", iosh:"iPhone",
+  ios1:"V príspevku stavby klikni na <b>📷 Fotos hochladen</b>.",
+  ios2:'Otvorí sa <b>aplikácia OneDrive</b> priamo v priečinku <span class="mono">01_Fotos</span>.',
+  ios3:"Dole klikni na <b>+</b> → <b>Nahrať</b> → <b>Fotky</b>.",
+  ios4:"Klikni na viac fotiek (každá dostane fajku) → <b>Hotovo</b>.",
+  iosmerk:"Ak sa namiesto aplikácie otvorí prehliadač: <b>zavri Safari</b> a klikni na odkaz znova. Ak zostane prehliadač, funguje to tam rovnako: <b>+</b> → <b>Nahrať</b>.",
+  androlbl:"Zariadenie 2", androh:"Android",
+  andro1:"V príspevku stavby klikni na <b>📷 Fotos hochladen</b>.",
+  andro2:'Keď sa telefón spýta „Čím otvoriť?" → vyber <b>OneDrive</b> a <b>Vždy</b>.',
+  andro3:'V priečinku <span class="mono">01_Fotos</span> klikni na <b>+</b> → <b>Nahrať</b> → <b>Fotky</b>.',
+  andro4:"Podrž fotku, potom klikaj na ďalšie → <b>Otvoriť</b>.",
+  andromerk:"Ak sa vždy otvára prehliadač: <b>Nastavenia → Aplikácie → OneDrive → Otvárať predvolene → Podporované odkazy</b> zapni. Potom to ide samo.",
+  einh:"Raz nastaviť — a už nikdy viac",
+  tu1:"Čo potrebuješ v telefóne",
+  einblock:"1. Nainštaluj aplikáciu \"OneDrive\"\n   (App Store / Google Play)\n\n2. Prihlás sa firemnou adresou\n   tou istou ako v Teams\n\n3. Teams už máš",
+  tu2:"Podľa čoho spoznáš správny priečinok",
+  ordblock:"01_Fotos\n\nnad ním je priečinok projektu, napr.\n260101-0000-IEI-ST_Musterkunde-GmbH_\nMusterprojekt",
+  ordcap:"Ak referenčné číslo hore nesedí s tým z príspevku, si na zlej stavbe — vráť sa a klikni na odkaz znova.",
+  r1h:"Všetky naraz", r1p:"Nie fotku po fotke. Na konci dňa označ všetky fotky stavby a nahraj ich naraz.",
+  r2h:"Aj dodacie listy", r2p:"Dodací list, štítok, stav elektromera, chyba — všetko odfoť do toho istého priečinka.",
+  r3h:"Nie do vlákna", r3p:"Obrázok vložený priamo do správy zostane v Teams a do priečinka projektu sa <b>nikdy</b> nedostane.",
+  r4h:"Žiadny WhatsApp", r4p:"Fotky zo stavby nechodia cez WhatsApp ani súkromnú galériu. Len cez odkaz.",
+  c1:"odfoť", c2:"otvor vlákno", c3:"klikni na odkaz", c4:"označ viac", c5:"je v priečinku projektu",
+  fuss:"Nahratie je hotové, keď sa objaví fajka. Pri slabom signáli OneDrive dopĺňa na pozadí — nevypínaj hneď sieť. Ak niečo nejde, napíš do vlákna stavby, neposielaj fotku inam."
+ },
+ hr:{
+  h1:"Fotografije s gradilišta — gdje idu",
+  sub:'Fotografije idu u projektnu mapu <span class="mono">01_Fotos</span> — ne kao slika u Teams temu. Preko poveznice u objavi gradilišta to su tri koraka.',
+  s1:"1  TEMA GRADILIŠTA", s2:"2  POŠALJI FOTKE", s3:"3  OZNAČI VIŠE",
+  s1b:"otvori u Teamsu", s2b:"dodirni poveznicu u objavi", s3b:"pošalji sve odjednom",
+  k1t:"Svako gradilište ima u Teamsu <b>jednu objavu</b>. Tamo je referentni broj i naziv mape.",
+  k2t:"U objavi je redak <b>📷 Fotos hochladen</b>. Dodirni baš njega — vodi u pravu mapu.",
+  k3t:"U mapi označi <b>više fotografija odjednom</b> i pošalji. Ne jednu po jednu.",
+  ioslbl:"Uređaj 1", iosh:"iPhone",
+  ios1:"U objavi gradilišta dodirni <b>📷 Fotos hochladen</b>.",
+  ios2:'Otvara se <b>aplikacija OneDrive</b> odmah u mapi <span class="mono">01_Fotos</span>.',
+  ios3:"Dolje dodirni <b>+</b> → <b>Prenesi</b> → <b>Fotografije</b>.",
+  ios4:"Dodirni više fotografija (svaka dobije kvačicu) → <b>Gotovo</b>.",
+  iosmerk:"Ako se umjesto aplikacije otvori preglednik: <b>zatvori Safari</b> i dodirni poveznicu ponovno. Ostane li preglednik, i tamo radi isto: <b>+</b> → <b>Prenesi</b>.",
+  androlbl:"Uređaj 2", androh:"Android",
+  andro1:"U objavi gradilišta dodirni <b>📷 Fotos hochladen</b>.",
+  andro2:'Kad telefon pita „Čime otvoriti?" → odaberi <b>OneDrive</b> i <b>Uvijek</b>.',
+  andro3:'U mapi <span class="mono">01_Fotos</span> dodirni <b>+</b> → <b>Prenesi</b> → <b>Fotografije</b>.',
+  andro4:"Dugo pritisni fotografiju, zatim dodiruj ostale → <b>Otvori</b>.",
+  andromerk:"Ako se uvijek otvara preglednik: <b>Postavke → Aplikacije → OneDrive → Otvaranje prema zadanom → Podržane poveznice</b> uključi. Nakon toga ide samo.",
+  einh:"Postavi jednom — i nikad više",
+  tu1:"Što ti treba na mobitelu",
+  einblock:"1. Instaliraj aplikaciju \"OneDrive\"\n   (App Store / Google Play)\n\n2. Prijavi se službenom adresom\n   istom kao u Teamsu\n\n3. Teams već imaš",
+  tu2:"Po čemu prepoznaješ pravu mapu",
+  ordblock:"01_Fotos\n\niznad nje stoji projektna mapa, npr.\n260101-0000-IEI-ST_Musterkunde-GmbH_\nMusterprojekt",
+  ordcap:"Ako se referentni broj gore ne slaže s onim iz objave, na krivom si gradilištu — vrati se i dodirni poveznicu ponovno.",
+  r1h:"Sve odjednom", r1p:"Ne fotku po fotku. Na kraju dana označi sve fotografije gradilišta i pošalji ih u jednom potezu.",
+  r2h:"I otpremnice", r2p:"Otpremnica, natpisna pločica, stanje brojila, nedostatak — sve fotografiraj u istu mapu.",
+  r3h:"Ne u temu", r3p:"Slika ubačena izravno u poruku ostaje u Teamsu i <b>nikad</b> ne dođe u projektnu mapu.",
+  r4h:"Bez WhatsAppa", r4p:"Fotografije s gradilišta ne idu preko WhatsAppa ni privatne galerije. Samo preko poveznice.",
+  c1:"slikaj", c2:"otvori temu", c3:"dodirni poveznicu", c4:"označi više", c5:"je u projektnoj mapi",
+  fuss:"Prijenos je gotov kad se pojavi kvačica. Kod slabog signala OneDrive dovršava u pozadini — nemoj odmah isključiti mrežu. Ako nešto ne radi, napiši u temu gradilišta, ne šalji fotografiju drugdje."
+ },
+ ro:{
+  h1:"Poze de pe șantier — unde se pun",
+  sub:'Pozele se pun în folderul proiectului <span class="mono">01_Fotos</span> — nu ca imagine în firul Teams. Prin linkul din postarea șantierului sunt trei pași.',
+  s1:"1  FIRUL ȘANTIERULUI", s2:"2  ÎNCARCĂ POZELE", s3:"3  SELECTEAZĂ MAI MULTE",
+  s1b:"deschide în Teams", s2b:"atinge linkul din postare", s3b:"trimite-le pe toate odată",
+  k1t:"Fiecare șantier are în Teams <b>o postare</b>. Acolo e numărul de referință și numele folderului.",
+  k2t:"În postare este rândul <b>📷 Fotos hochladen</b>. Atinge exact acest rând — duce în folderul corect.",
+  k3t:"În folder selectează <b>mai multe poze odată</b> și încarcă-le. Nu una câte una.",
+  ioslbl:"Dispozitiv 1", iosh:"iPhone",
+  ios1:"În postarea șantierului atinge <b>📷 Fotos hochladen</b>.",
+  ios2:'Se deschide <b>aplicația OneDrive</b> direct în folderul <span class="mono">01_Fotos</span>.',
+  ios3:"Jos atinge <b>+</b> → <b>Încărcare</b> → <b>Fotografii</b>.",
+  ios4:"Atinge mai multe poze (fiecare primește o bifă) → <b>Gata</b>.",
+  iosmerk:"Dacă se deschide browserul în loc de aplicație: <b>închide Safari</b> și atinge linkul din nou. Dacă rămâne browserul, acolo merge la fel: <b>+</b> → <b>Încărcare</b>.",
+  androlbl:"Dispozitiv 2", androh:"Android",
+  andro1:"În postarea șantierului atinge <b>📷 Fotos hochladen</b>.",
+  andro2:'Când telefonul întreabă „Cu ce deschizi?" → alege <b>OneDrive</b> și <b>Întotdeauna</b>.',
+  andro3:'În folderul <span class="mono">01_Fotos</span> atinge <b>+</b> → <b>Încărcare</b> → <b>Fotografii</b>.',
+  andro4:"Ține apăsat pe o poză, apoi atinge-le pe următoarele → <b>Deschide</b>.",
+  andromerk:"Dacă se deschide mereu browserul: <b>Setări → Aplicații → OneDrive → Deschidere implicită → Linkuri acceptate</b> activează. După aceea merge singur.",
+  einh:"Configurezi o dată — și gata",
+  tu1:"Ce îți trebuie pe telefon",
+  einblock:"1. Instalează aplicația \"OneDrive\"\n   (App Store / Google Play)\n\n2. Conectează-te cu adresa de firmă\n   aceeași ca în Teams\n\n3. Teams îl ai deja",
+  tu2:"Cum recunoști folderul corect",
+  ordblock:"01_Fotos\n\ndeasupra este folderul proiectului, ex.\n260101-0000-IEI-ST_Musterkunde-GmbH_\nMusterprojekt",
+  ordcap:"Dacă numărul de referință de sus nu se potrivește cu cel din postare, ești pe alt șantier — înapoi și atinge linkul din nou.",
+  r1h:"Toate odată", r1p:"Nu poză cu poză. La sfârșitul zilei selectează toate pozele șantierului și încarcă-le dintr-o dată.",
+  r2h:"Și avizele de livrare", r2p:"Aviz de livrare, plăcuță, index contor, defect — fotografiază tot în același folder.",
+  r3h:"Nu în fir", r3p:"O imagine pusă direct în mesaj rămâne în Teams și <b>nu ajunge niciodată</b> în folderul proiectului.",
+  r4h:"Fără WhatsApp", r4p:"Pozele de pe șantier nu merg prin WhatsApp sau galeria privată. Doar prin link.",
+  c1:"fă poza", c2:"deschide firul", c3:"atinge linkul", c4:"selectează mai multe", c5:"e în folderul proiectului",
+  fuss:"Încărcarea e gata când apare bifa. La semnal slab OneDrive continuă în fundal — nu scoate telefonul imediat din rețea. Dacă ceva nu merge, scrie în firul șantierului, nu trimite poza în altă parte."
+ }
+};
+
+(function(){
+  var nodes = document.querySelectorAll("[data-k]");
+  var de = {};
+  nodes.forEach(function(n){
+    de[n.getAttribute("data-k")] = (n.namespaceURI && n.namespaceURI.indexOf("svg") > -1)
+      ? n.textContent : n.innerHTML;
+  });
+
+  function setLang(lang){
+    var dict = (lang === "de") ? de : T[lang];
+    nodes.forEach(function(n){
+      var k = n.getAttribute("data-k");
+      var v = (dict && dict[k] !== undefined) ? dict[k] : de[k];
+      if (n.namespaceURI && n.namespaceURI.indexOf("svg") > -1) {
+        n.textContent = String(v).replace(/<[^>]*>/g, "");
+      } else {
+        n.innerHTML = String(v).replace(/\n/g, "<br>");
+      }
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll(".sprachen button").forEach(function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-lang") === lang ? "true" : "false");
+    });
+  }
+
+  document.querySelectorAll(".sprachen button").forEach(function(b){
+    b.addEventListener("click", function(){ setLang(b.getAttribute("data-lang")); });
+  });
+})();
+</script>
+</body>
+</html>
